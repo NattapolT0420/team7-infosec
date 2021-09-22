@@ -68,7 +68,7 @@
                         <tbody>
                             <tr>
                                 <td style="padding:20px 0;text-align:center;font-size: 18px;font-weight: bold;">
-                                    Team7 - Infomation Security
+                                    Team7 - Information Security
                                 </td>
                             </tr>
                         </tbody>
@@ -132,7 +132,7 @@
         </div>';
         
         //Recipients
-        $mail->setFrom('Team7-Infosec@email.com', 'Team7 - Infamation Security');
+        $mail->setFrom('Team7-Infosec@email.com', 'Team7 - Information Security');
         $mail->addAddress($to);
 
         //Content

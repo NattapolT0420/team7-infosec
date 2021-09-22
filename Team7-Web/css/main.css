@@ -110,6 +110,11 @@ span.register {
     font-size: 20px;
 }
 
+.btnlogout {
+    background-color: transparent;
+    border: transparent;
+}
+
 .btncancle {
     padding: 5px 10px;
     width: auto;
@@ -454,9 +459,10 @@ span.register {
 
 /* Contact */
 
-#contact {
+
+/* #contact {
     height: 100vh;
-}
+} */
 
 #contact input[type=text],
 #contact select,
@@ -470,7 +476,8 @@ span.register {
 }
 
 #contact input[type=submit] {
-    background-color: #04AA6D;
+    background-color: #2E86C1;
+    width: 100%;
     color: white;
     padding: 12px 20px;
     border: none;
@@ -478,7 +485,7 @@ span.register {
 }
 
 #contact input[type=submit]:hover {
-    background-color: #45a049;
+    background-color: #2471A3;
 }
 
 #contact.tab-pane {

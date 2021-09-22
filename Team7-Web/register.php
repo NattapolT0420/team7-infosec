@@ -2,7 +2,7 @@
 
     session_start();
 
-    if(isset($_SESSION['name'])) {
+    if(isset($_SESSION['token'])) {
         header('location: index.php');
     }
 
@@ -265,8 +265,11 @@
 
         $('.alert').css("display","none");
 
-        const form = $('.tab-pane.active').find("form")
+        const alert = $('.tab-pane.active').find(".alert");
+        const error = $('.tab-pane.active').find(".error");
 
+        const form = $('.tab-pane.active').find("form")
+        const role_name = $('.tab-pane.active').find("input[name='role_name']");
         const userid = $('.tab-pane.active').find("input[name='userid']");
         const name = $('.tab-pane.active').find("input[name='name']");
         const email = $('.tab-pane.active').find("input[name='email']");
@@ -285,10 +288,50 @@
         }
 
         userid.keyup(function() {
-            if(validateUserID(userid.val()) && userid.val().length <= 13) {
-                userid.prop('classList').remove('is-invalid')
-                userid.prop('classList').add('is-valid')
-                invalid_userid.prop('classList').remove('d-block')
+            alert.css("display","none");
+            if(validateUserID(userid.val()) && userid.val().length == 13) {
+                if(role_name.val() == 'PARENT') {
+                    $.ajax({
+                        url: "check.php?method=check_userid_student",
+                        method: "post",
+                        data: {
+                            userid: userid.val()
+                        },
+                        success: function(response) {
+                            // console.log(response);
+                            if (response == "success") {
+                                userid.prop('classList').remove('is-invalid')
+                                userid.prop('classList').add('is-valid')
+                                invalid_userid.prop('classList').remove('d-block')
+                                alert.css("display","none");
+                            } else {
+                                invalid_userid.prop('classList').remove('d-block')
+                                alert.css("display","flex");
+                                error.html(response);
+                            }
+                        }
+                    });
+                } else {
+                    $.ajax({
+                        url: "check.php?method=check_userid",
+                        method: "post",
+                        data: {
+                            userid: userid.val()
+                        },
+                        success: function(response) {
+                            // console.log(response);
+                            if (response == "success") {
+                                userid.prop('classList').remove('is-invalid')
+                                userid.prop('classList').add('is-valid')
+                                invalid_userid.prop('classList').remove('d-block')
+                                alert.css("display","none");
+                            } else {
+                                alert.css("display","flex");
+                                error.html(response);
+                            }
+                        }
+                    });
+                }
             } else if(userid.val().length > 13) {
                 userid.prop('classList').remove('is-valid')
                 userid.prop('classList').add('is-invalid')
@@ -324,10 +367,30 @@
         }
 
         email.keyup(function() {
+            alert.css("display","none");
             if (validateEmail(email.val())) {
-                email.prop('classList').remove('is-invalid')
-                email.prop('classList').add('is-valid')
-                invalid_email.prop('classList').remove('d-block')
+                $.ajax({
+                    url: "check.php?method=check_email",
+                    method: "post",
+                    data: {
+                        email: email.val()
+                    },
+                    success: function(response) {
+                        // console.log(response);
+                        if (response == "success") {
+                            email.prop('classList').remove('is-invalid')
+                            email.prop('classList').add('is-valid')
+                            invalid_email.prop('classList').remove('d-block')
+                            alert.css("display","none");
+                        } else {
+                            email.prop('classList').remove('is-valid')
+                            email.prop('classList').add('is-invalid')
+                            invalid_email.prop('classList').remove('d-block')
+                            alert.css("display","flex");
+                            error.html(response);
+                        }
+                    }
+                });
             } else {
                 email.prop('classList').remove('is-valid')
                 email.prop('classList').add('is-invalid')

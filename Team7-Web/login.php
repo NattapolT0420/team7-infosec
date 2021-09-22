@@ -2,7 +2,7 @@
 
     session_start();
 
-    if(isset($_SESSION['name'])) {
+    if(isset($_SESSION['token'])) {
         header('location: index.php');
     }
 
@@ -15,7 +15,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
+    <title>Login</title>
 
     <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -106,47 +106,6 @@
 
 <script>
 
-$("form").submit(function() {
-    // console.log("Login")
-
-    if ($("input[name='email']").val() == "" && $("input[name='password']").val() == "") {
-
-        $("input[name='email']").prop('classList').add('is-invalid')
-        $("div[name='invalid-email']").prop('classList').add('d-block')
-
-        $("input[name='password']").prop('classList').add('is-invalid')
-        $("div[name='invalid-password']").prop('classList').add('d-block')
-
-        event.preventDefault();
-    } else if ($("input[name='email']").attr('class').includes('is-invalid')) {
-        $("input[name='email']").focus();
-        event.preventDefault();
-    } else if ($("input[name='password']").attr('class').includes('is-invalid')) {
-        $("input[name='password']").focus();
-        event.preventDefault();
-    } else {
-        event.preventDefault();
-        $.ajax({
-            url: "login_db.php",
-            method: "post",
-            data: {
-                email: $("input[name='email']").val(),
-                password: $("input[name='password']").val(),
-            },
-            success: function(response) {
-                // console.log(response);
-                if(response == "success") {
-                    location.href = 'index.php';
-                } else {
-                    $(".alert-warning").css("display","none");
-                    $(".alert-danger").css("display","flex");
-                    $(".error").html(response);
-                }
-            }
-        })
-    }
-});
-
 function validateEmail(email) {
     const re =
         /^(([^!#\$%&'*+/=?\^\|~<>(){}[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -182,6 +141,61 @@ $("input[name='password']").keyup(function() {
         $("div[name='invalid-password']").prop('classList').add('d-block')
     }
 });
+
+$("form").submit(function() {
+    // console.log("Login")
+
+    if ($("input[name='email']").val() == "" && $("input[name='password']").val() == "") {
+
+        $("input[name='email']").prop('classList').add('is-invalid')
+        $("div[name='invalid-email']").prop('classList').add('d-block')
+
+        $("input[name='password']").prop('classList').add('is-invalid')
+        $("div[name='invalid-password']").prop('classList').add('d-block')
+
+        event.preventDefault();
+    } else if ($("input[name='email']").attr('class').includes('is-invalid')) {
+        $("input[name='email']").focus();
+        event.preventDefault();
+    } else if ($("input[name='password']").attr('class').includes('is-invalid')) {
+        $("input[name='password']").focus();
+        event.preventDefault();
+    } else {
+        event.preventDefault();
+        $.ajax({
+            url: "login_db.php",
+            method: "post",
+            data: {
+                email: $("input[name='email']").val(),
+                password: $("input[name='password']").val(),
+            },
+            success: function(response) {
+                // console.log(response);
+                if(response == "success") {
+                    location.href = 'index.php';
+                    // $.ajax({
+                    //     url: "manage_token.php?method=save_token",
+                    //     type: "post",
+                    //     data: {
+                    //         action : "get_token",
+                    //     },//ส่งข้อมูล user และกำหนด action เป็น get_token
+                    //     success:function(response) {
+                    //         //เก็บ token ไว้ในตัวแปร token
+                    //         token=response.trim();
+                    //         //แสดง token <div id="server_response"></div>
+                    //         $("#server_response").html("<b>Token:</b>"+token);
+                    //     }
+                    // });
+                } else {
+                    $(".alert-warning").css("display","none");
+                    $(".alert-danger").css("display","flex");
+                    $(".error").html(response);
+                }
+            }
+        })
+    }
+});
+
 </script>
 
 </html>

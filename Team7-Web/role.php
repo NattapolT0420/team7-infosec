@@ -23,7 +23,7 @@
         $permission = $_POST['permission'];
         $permission = json_encode($permission);
         
-        $sql_permission = "UPDATE role SET permission = '$permission' WHERE role_id = '$role_id'";
+        $sql_permission = "UPDATE role SET permission = '$permission', update_at = SYSDATE() WHERE role_id = '$role_id'";
         if(mysqli_query($connect, $sql_permission)) {
             echo "success";
         } else {

@@ -3,6 +3,90 @@ $(function() {
     $("#permission").css("display", "block");
 });
 
+setInterval(function() {
+    $.ajax({
+        url: "refresh_token.php?method=refresh_token",
+        type: "post",
+        success: function(response) {
+            console.log(response);
+        }
+    });
+}, 60000);
+
+function logout() {
+    console.log("Logout");
+    $.ajax({
+        url: "logout.php",
+        type: "post",
+        success: function(response) {
+            // console.log(response);
+            if (response == "success") {
+                location.href = 'login.php';
+            } else {
+                Swal.fire({
+                    title: 'ไม่สามารถออกจากระบบได้',
+                    icon: 'error',
+                    confirmButtonColor: '#FF2557',
+                    confirmButtonText: 'ตกลง'
+                }).then((result) => {
+                    location.href = 'index.php';
+                })
+            }
+        }
+    });
+}
+
+$("#contact-form").submit(function(event) {
+    event.preventDefault();
+    // console.log($('#list_id').val());
+    $.ajax({
+        url: "contact.php",
+        type: "post",
+        data: {
+            fname: $('#fname').val(),
+            lname: $('#lname').val(),
+            subject: $('#subject').val(),
+        },
+        beforeSend: function() {
+            Swal.fire({
+                title: 'กำลังส่งอีเมล',
+                allowEscapeKey: false,
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading()
+                },
+            })
+        },
+        success: function(response) {
+            // console.log(response);
+            Swal.close();
+            if (response == "success") {
+                Swal.fire({
+                    title: 'ส่งอีเมลสำเร็จ',
+                    icon: 'success',
+                    confirmButtonColor: '#27AE60',
+                    confirmButtonText: 'ตกลง'
+                }).then((result) => {
+                    $('#fname').val('');
+                    $('#lname').val('');
+                    $('#subject').val('');
+                })
+            } else if (response == "fail") {
+                Swal.fire({
+                    title: 'ไม่สามารถส่งอีเมลได้',
+                    icon: 'error',
+                    confirmButtonColor: '#FF2557',
+                    confirmButtonText: 'ตกลง'
+                }).then((result) => {
+                    $('#fname').val('');
+                    $('#lname').val('');
+                    $('#subject').val('');
+                })
+            }
+        }
+    });
+});
+
 document.addEventListener("DOMContentLoaded", function(event) {
 
     const showNavbar = (toggleId, navId, bodyId, headerId) => {

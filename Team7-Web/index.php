@@ -2,16 +2,16 @@
 
     session_start();
 
-    if(!isset($_SESSION['name'])) {
+    if(!isset($_SESSION['token'])) {
         $_SESSION['chklogin'] = "กรุณาเข้าสู่ระบบก่อน";
         header('location: login.php');
     }
 
-    if(isset($_GET['logout'])) {
-        session_destroy();
-        unset($_SESSION['name']);
-        header('location: login.php');
-    }
+    // if(isset($_GET['logout'])) {
+    //     session_destroy();
+    //     unset($_SESSION['name']);
+    //     header('location: login.php');
+    // }
 
     include("list_teacher.php");
     include("list_course.php");
@@ -25,7 +25,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Team7-Infosec</title>
 
     <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -178,10 +178,10 @@
                     </div>
                 </div>
             </div>
-            <a href="index.php?logout='1'" class="nav_link">
+            <button type="button" class="nav_link btnlogout" onclick="logout()">
                 <i class='bx bx-log-out-circle' style="font-size: 1.5rem;"></i>
                 <span class="nav_name">SignOut</span>
-            </a>
+            </button>
         </nav>
     </div>
     <!--Container Main start-->
@@ -228,23 +228,23 @@
                 </div>
                 <div class="row">
                     <div class="column">
-                        <img src="images/contact.jpg" style="width:100%; padding-top: 2%;">
+                        <img src="images/contact.jpg" style="width:90%; padding-top: 2%;">
                     </div>
                     <div class="column form-group">
-                        <form action="#">
+                        <form id="contact-form" method="post">
                             <label for="fname">ชื่อ</label>
                             <input type="text" class="form-control" id="fname" name="firstname"
                                 placeholder="กรุณากรอกชื่อ...">
                             <label for="lname">นามสกุล</label>
                             <input type="text" class="form-control" id="lname" name="lastname"
                                 placeholder="กรุณากรอกนามสกุล...">
-                            <label for="country">จังหวัด</label>
+                            <!-- <label for="country">จังหวัด</label>
                             <select class="form-select" id="country" name="country">
                                 <option value="bangkok">กรุงเทพมหานคร</option>
                                 <option value="nst">นครศรีธรรมราช</option>
                                 <option value="chiangmai">เชียงใหม่</option>
                                 <option value="nan">น่าน</option>
-                            </select>
+                            </select> -->
                             <label for="subject">เรื่อง</label>
                             <textarea class="form-control" id="subject" name="subject"
                                 placeholder="กรุณาระบุเรื่องที่ต้องการจะติดต่อ..." style="height:170px"></textarea>
